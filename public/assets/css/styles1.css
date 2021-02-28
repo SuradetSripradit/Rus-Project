@@ -1,0 +1,141 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Sarabun', sans-serif;
+    height: 100vh;
+
+}
+
+nav {
+    display: flex;
+    height: auto;
+    background: #F7DC6F;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    flex-direction: column;
+}
+
+.nav-toggle {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 30px;
+    display: inline-block;
+}
+
+.logo {
+    margin: 40px 0 40px 0;
+    color: #fff ;
+    font-size: 20px;
+    /* border: 1px solid salmon; */
+}
+
+ul {
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 0;
+    display: none;
+}
+
+ul li {
+    list-style-type: none;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 20px;
+    text-align: center; 
+    border-bottom-style: solid;
+    border-bottom-color: #ccc;
+    border-bottom-width: 1px;
+    padding: 2px 50px;
+}
+
+ul li a {
+    text-decoration: none;
+    color: #fff ;
+}
+
+ul li:first-child {
+    margin-top: 0;
+}
+
+ul li:hover {
+    opacity: 0.5;
+}
+
+.active {
+    display: flex;
+}
+
+@media screen and (min-width: 800px) {
+    nav {
+        height: 70px;
+        flex-direction: row;
+    }
+
+    .logo {
+        padding-left: 50px;
+        margin: 0;
+        width: 20%;
+    }
+
+    ul {
+        display: flex;
+        justify-content: flex-end;
+        width: 80%;
+        flex-direction: row;
+    }
+
+    ul li {
+        display: inline-block;
+        margin: 0 70px 0 0;
+        text-align: left;
+        border-bottom-style: none;
+        padding: 0;
+    }
+
+    .nav-toggle {
+        display: none;
+    }
+}
+
+header {
+    height: 400px;
+    overflow: hidden;
+    /* border: 1px solid #F7DC6F; */
+    background: url(https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?ixid=MXwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80) no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.header-info {
+    /* border: 1px solid red; */
+    width: 500px;
+    margin-top: 5rem;
+    margin-left: 8rem;
+    color: #fff;
+}
+.header-info h1 {
+    font-size: 3rem;
+}
+.header-info p {
+    margin: 1rem 0;
+    line-height: 1.5;
+}
+.header-info a {
+    color: #fff;
+    border: 2px solid #fff;
+    padding: .5rem 1rem;
+    display: inline-block;
+    text-decoration: none;
+}
+
+footer {
+    background: #F7DC6F;
+    padding: 2rem;
+    text-align: center;
+    color: #fff;
+}
