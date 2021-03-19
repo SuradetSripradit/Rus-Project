@@ -1,37 +1,38 @@
 @extends('layouts/master')
-@section('menulist')
+
+@section('TitleTab')
+    @yield('TitleTabName')
+@endsection
+
+@section('MenuList')
     <ul class="navbar-nav text-uppercase ml-auto">
-        <li class="nav-item"><a class="nav-link js-scroll-trigger" style="color :black" href="/index"> หน้าแรก </a></li>
-        <li class="nav-item"><a class="nav-link js-scroll-trigger" style="color :black" href="/relations"> ประชาสัมพันธ์ </a></li>
-        <li class="nav-item"><a class="nav-link js-scroll-trigger" style="color :black" href="/course"> หลักสูตร </a></li> 
-        <li class="nav-item"><a class="nav-link js-scroll-trigger" style="color :black" href="/re"> สมัครเรียน</a></li>
-        @guest
-                            <li class="nav-item">
-                                <a class="nav-link" style="color :black" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            @if (Route::has('register'))
-                              
-                            
-                            @endif
-                            @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" style="color :black" class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                         document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+        <li class="nav-item"><a class="nav-link js-scroll-trigger text-white" href="/anouncement"> ข่าวสารประชาสัมพันธ์ </a></li>
+        <li class="nav-item"><a class="nav-link js-scroll-trigger text-white" href="/personnel"> บุคลากรประจำคณะ </a></li>
+        <li class="nav-item">
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle text-white" data-toggle="dropdown">หลักสูตรที่เปิดรับสมัคร</a>
+                    <div class="dropdown-menu">
+                        @foreach ($course_type as $course_type_list)
+                            <h5 class="dropdown-header">
+                                <strong style="color:rgb(189, 114, 2)">
+                                    @if ($course_type_list["COURSE_TYPE"] == "T")
+                                        หลักสูตรเทียบโอน (2 ปี)
+                                    @elseif ($course_type_list["COURSE_TYPE"] == "R")
+                                        หลักสูตรปกติ (4 ปี)
+                                    @endif
+                                </strong>
+                            </h5>
+                            @foreach ($course_name as $course_name_list)
+                                @if ($course_name_list["COURSE_TYPE"] == $course_type_list["COURSE_TYPE"])
+                                    <a class="dropdown-item" href="{{ url('course' , $course_name_list['COURSE_CODE']) }}">
+                                        {{ $course_name_list["COURSE_NAME_TH"] }}
                                     </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
+                                @endif
+                            @endforeach
+                        @endforeach
+                    </div>
+            </div>
+        </li>
     </ul>
 
 @endsection
@@ -43,4 +44,9 @@
 @endsection
 
 @section('AnotherLink')
+    @yield('NewLink')
+@endsection
+
+@section('JsFunction')
+    @yield('FncJs')
 @endsection

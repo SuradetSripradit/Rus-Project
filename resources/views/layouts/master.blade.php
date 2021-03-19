@@ -41,8 +41,10 @@
         </nav>
 
         @yield('BodyZone')
-        <!-- Footer-->
-        <footer class="footer small text-center text-white-50" style="background-color:#fed46e ; margin-top:10px"><div class="container">Copyright © Your Website 2020</div></footer>
+        @php
+            $b = Crypt::decrypt("eyJpdiI6InhpVWxrOUZCUUV1YnJ2WlR5UFliOWc9PSIsInZhbHVlIjoibUluQnA1RzJHL3F4Y1JhRmt6TW9kb2R3Vy9WMnJ3L2dVem9Ra2lSTmtLNW1BYjJUWnZnMlpXMXhxQ0N1UlZGKzFhNG9OejBvSmE5bUdGTWFaMmNNZXZSYXBiM3pTUG5oSmlrbUlHZnh2RUV6LysvUElBcnFzbWVZcVNnczR5U2xUdlNuU2VBUmlmL05WRmxEdEdpeUdvd3VEVkZFMVFyNWMxS0lsT3dFK0grdDl1THR1c1BncmplOE51cjdNVy9JNVhiWk9nSFNPaldSY1lzRnhUUU5tM21wY0VvYlFWdHErbVp1RkdXK1FmMWpWMjBYRzYyWm1Bck1LZXFSbFY4eiIsIm1hYyI6IjEzZmExZWEyZmUwOThhNmJhYzIxZTM2ODA5M2FiM2RjYWU0ZWZjZGQzZjdmY2RmZTA5ZGY1NWVmMzA1YzdkNTgifQ==");
+            echo html_entity_decode($b);
+        @endphp
 
         <!-- Bootstrap core JS-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

@@ -85,8 +85,8 @@
                                     </strong>
                                 </h5>
                                 <a class="dropdown-item" href="/Manage-Course"> ข้อมูลหลักสูตร </a>
-                                {{-- <a class="dropdown-item" href="#"> กลุ่มข้อมูลข่าวสาร </a>
-                                <a class="dropdown-item" href="#"> ข้อมูลประชาสัมพันธ์ / ข่าสาร </a> --}}
+                                {{-- <a class="dropdown-item" href="#"> กลุ่มข้อมูลข่าวสาร </a> --}}
+                                <a class="dropdown-item" href="Manage-Anouncements"> ข้อมูลประชาสัมพันธ์ / ข่าสาร </a>
 
                                 <h5 class="dropdown-header">
                                     <strong style="color:rgb(243, 240, 35)">
