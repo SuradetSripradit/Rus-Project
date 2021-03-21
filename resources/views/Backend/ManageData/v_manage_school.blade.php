@@ -1,3 +1,8 @@
+@php
+    $md_size = "";
+    $btn_add_submit = "";
+    $btn_upd_submit = "";
+@endphp
 @extends('Backend.ManageData.master')
 
 @section('TitleMenu')

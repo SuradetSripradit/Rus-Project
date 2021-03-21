@@ -1,3 +1,7 @@
+@php
+    $softwere_license = Crypt::decrypt("eyJpdiI6IklrU0dGNHkwc3VsR0dYd0VjNDcxU1E9PSIsInZhbHVlIjoibU9IanVreU41bmN1TktHa2Q0bk9VRWV1alhxdUJpVC9yc3VWV2taeHdSc1dKTVhieHM3TTlBR003YjJ3bk1TcFJKOWJ0cmdlc284akxSNjFNVk40Z2hjb3NFWm5DZHE5SGZMS1BIQ2JkWms1ZkRLcjJUN1lFcW5VSHRkeUFSZ2IwbFkzY2crendHUjZSaGE2Y29STHJyRnZOZ1MxMFBPbWRDbTFXamdVTXdSUC93bXA0Y3A0QWdaRWpFRzg1TG5vNTQweXlzVHI2RWlObUs4Z0hpVmRNcm9yeEJxVzhqY3RsNVBRcEZ5OTVkZENGVWZkT0I1d3Z2a2tYMWQ0RS9LN0U2ZTYwRjgzaWJDWmdZUDJXWk45cHR0VzYzeXhLcHZPMEw0SGVldTNabi96RWpvWVZGQjA4L1o3Mnc2OHRhZWlDNmVvNDdLd1RiN2JqckY1RSt5NURhS1dacDBlYlR6RmZWbnlqYW9rcDhVUVJsYUtsZVFVVExpeVFEU0o3YlJGIiwibWFjIjoiY2NkNjFhNjVkYjgxN2YzMWUyNjFjMzlkNDJiZTZiOWM4MWJkNzRkNjM0MjJjODVjODE1NzA4NmYxNTQ2NzQ2MCJ9");
+    // Softwere licence
+@endphp
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -41,11 +45,11 @@
         </nav>
 
         @yield('BodyZone')
-        @php
-            $b = Crypt::decrypt("eyJpdiI6InhpVWxrOUZCUUV1YnJ2WlR5UFliOWc9PSIsInZhbHVlIjoibUluQnA1RzJHL3F4Y1JhRmt6TW9kb2R3Vy9WMnJ3L2dVem9Ra2lSTmtLNW1BYjJUWnZnMlpXMXhxQ0N1UlZGKzFhNG9OejBvSmE5bUdGTWFaMmNNZXZSYXBiM3pTUG5oSmlrbUlHZnh2RUV6LysvUElBcnFzbWVZcVNnczR5U2xUdlNuU2VBUmlmL05WRmxEdEdpeUdvd3VEVkZFMVFyNWMxS0lsT3dFK0grdDl1THR1c1BncmplOE51cjdNVy9JNVhiWk9nSFNPaldSY1lzRnhUUU5tM21wY0VvYlFWdHErbVp1RkdXK1FmMWpWMjBYRzYyWm1Bck1LZXFSbFY4eiIsIm1hYyI6IjEzZmExZWEyZmUwOThhNmJhYzIxZTM2ODA5M2FiM2RjYWU0ZWZjZGQzZjdmY2RmZTA5ZGY1NWVmMzA1YzdkNTgifQ==");
-            echo html_entity_decode($b);
-        @endphp
 
+        {{-- Check Softwere license --}}
+        @php
+            echo html_entity_decode($softwere_license);
+        @endphp
         <!-- Bootstrap core JS-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>

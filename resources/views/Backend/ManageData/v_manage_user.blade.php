@@ -1,4 +1,9 @@
 @php
+    $md_size = "";
+    $btn_add_submit = "";
+    $btn_upd_submit = "";
+@endphp
+@php
     $crrRoute  = "/Manage-User";
 @endphp
 @extends('Backend.ManageData.master')

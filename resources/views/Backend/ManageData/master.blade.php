@@ -66,7 +66,7 @@
 @section('AddDataModal')
     <!-- Modal -->
     <div class="modal fade " id="Md_AddData" role="dialog">
-        <div class="modal-dialog">
+        <div class="modal-dialog {{ $md_size }}">
 
             <!-- Modal content-->
             <div class="modal-content">
@@ -82,8 +82,12 @@
                         @yield('Add_ModalForm')
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn-lg btn-success">บันทึก</button>
-                        <button type="button" class="btn-lg btn-danger" data-dismiss="modal">ปิด</button>
+                        @if ($btn_add_submit == "")
+                            <button type="submit" class="btn-lg btn-success">บันทึก</button>
+                            <button type="button" class="btn-lg btn-danger" data-dismiss="modal">ปิด</button>
+                        @elseif ($btn_add_submit == "manual")
+                            @yield('manual_add_btn')
+                        @endif
                     </div>
                 </form>
             </div>
@@ -113,7 +117,11 @@
                             @yield('upd_ModalForm')
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn-lg btn-warning">แก้ไข</button>
+                            @if ($btn_upd_submit == "")
+                                <button type="submit" class="btn-lg btn-warning">แก้ไข</button>
+                            @elseif ($btn_upd_submit == "manual")
+                                @yield('manual_upd_btn')
+                            @endif
                             <button type="button" class="btn-lg btn-danger" onclick="CloseModal('{{ $crrRoute }}')">ปิด</button>
                         </div>
                     </form>

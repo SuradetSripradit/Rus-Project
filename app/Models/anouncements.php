@@ -18,6 +18,7 @@ class anouncements extends Model
         "ANC_DETAIL" ,
         "FILE_FLAG" ,
         "FILE_NAME" ,
+        "ANC_LINK" ,
         "IMG_FLAG" ,
         "IMG_NAME" ,
         "ANC_TAG" ,
