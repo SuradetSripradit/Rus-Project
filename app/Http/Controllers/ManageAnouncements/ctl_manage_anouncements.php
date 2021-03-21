@@ -117,6 +117,7 @@ class ctl_manage_anouncements extends Controller
             WHERE ANC_CODE = '$id'"
         );
 
+        // Create script
         $unique_res = DB::statement($update_query);
         if ($unique_res) {
             return redirect()->route('Manage-Anouncements.index')->with('success' , 'ลบข้อมูลเรียบร้อยแล้ว !');
