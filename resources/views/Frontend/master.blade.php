@@ -6,7 +6,7 @@
 
 @section('MenuList')
     <ul class="navbar-nav text-uppercase ml-auto">
-        <li class="nav-item"><a class="nav-link js-scroll-trigger text-white" href="/anouncement"> ข่าวสารประชาสัมพันธ์ </a></li>
+        <li class="nav-item"><a class="nav-link js-scroll-trigger text-white" href="{{ url('anouncements') }}"> ข่าวสารประชาสัมพันธ์ </a></li>
         <li class="nav-item"><a class="nav-link js-scroll-trigger text-white" href="/personnel"> บุคลากรประจำคณะ </a></li>
         <li class="nav-item">
             <div class="dropdown">

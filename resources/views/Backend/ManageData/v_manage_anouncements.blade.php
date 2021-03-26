@@ -248,12 +248,14 @@
 
                 // validate date
                 if (exp_flag == "Y") {
-                            if (efft_date == exp_date) {
-                                swal("ไม่สามารถเพิ่มข้อมูลได้" , "วันที่แสดงข่าว และ วันที่สิ้นสุด ไม่สามารถเป็นค่าเดียวกันได้ !" , "error");
-                            } else {
-                                valid_date = true;
-                            }
-                        }
+                    if (efft_date == exp_date) {
+                            swal("ไม่สามารถเพิ่มข้อมูลได้" , "วันที่แสดงข่าว และ วันที่สิ้นสุด ไม่สามารถเป็นค่าเดียวกันได้ !" , "error");
+                    } else {
+                        valid_date = true;
+                    }
+                } else {
+                    valid_date = true;
+                }
             // set attribute form
                 if (valid_file == true && valid_image == true && valid_date == true) {
                     formData.submit();
