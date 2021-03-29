@@ -8,6 +8,7 @@ use App\Http\Controllers\ManageCourse\ctl_manage_course;
     use App\Http\Controllers\ManageData\ctl_manage_prefix;
     use App\Http\Controllers\ManageUser\ctl_manage_user;
 use App\Models\anouncements;
+use App\Models\class_level;
 use App\Models\course;
 use App\Models\personnel;
 use App\Models\User;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Route;
     use Illuminate\Support\Facades\Auth;
     use Illuminate\Support\Facades\DB;
     use Illuminate\Support\Facades\Storage;
+
 
 Route::get('/', function () {
 // Show course type in menu list
@@ -104,9 +106,10 @@ Route::get('course/{id}', function ($id) {
     )->where('ACTIVE_FLAG' , 'Y')->distinct()->get()->toArray();
 
     $unique_course = course::all()->where('ACTIVE_FLAG' , 'Y')->where('COURSE_CODE' , $id)->toArray();
+    $class_level = class_level::all()->toArray();
 
 // return page
-    return view('Frontend.course.Index' , compact('course_type' , 'course_name' , 'unique_course'));
+    return view('Frontend.course.Index' , compact('course_type' , 'course_name' , 'unique_course' , 'class_level'));
 });
 
 Route::get('promote-image/{id}', function ($id) {

@@ -15,7 +15,10 @@ class ctl_manage_course extends Controller
     {
         $DataCourse = course::all()->where('ACTIVE_FLAG' , 'Y')->toArray();
         $CheckUpdate = false;
-        $personOfCourse = personnel::all()->where('POSITION_CODE','00002')->toArray();
+        $personOfCourse = DB::table('QUOTA_T_PERSONNEL')
+                            ->join('QUOTA_T_PREFIX' , 'QUOTA_T_PERSONNEL.PREFIX_ID' , 'QUOTA_T_PREFIX.PREFIX_CODE')
+                            ->where('POSITION_CODE','00002')
+                            ->get()->toArray();
         return view('Backend.ManageData.v_manage_course' , compact('DataCourse' , 'CheckUpdate' , 'personOfCourse'));
     }
 
@@ -37,7 +40,7 @@ class ctl_manage_course extends Controller
 
         // upload file to strage
         $file_name = $new_course_code . "-" . $request->file->getClientOriginalName();
-        $filePath = $request->file('file')->storeAs('PromoteCourse', $file_name, 'public');
+        $filePath = $request->file('file')->storeAs('img/PromoteCourse', $file_name, 'public');
 
         $course_res = new course([
             "COURSE_CODE" => $new_course_code ,
@@ -68,7 +71,10 @@ class ctl_manage_course extends Controller
     {
         $DataCourse = course::all()->where('ACTIVE_FLAG' , 'Y')->toArray();
         $CheckUpdate = true;
-        $personOfCourse = personnel::all()->where('POSITION_CODE','00002')->toArray();
+        $personOfCourse = DB::table('QUOTA_T_PERSONNEL')
+                            ->join('QUOTA_T_PREFIX' , 'QUOTA_T_PERSONNEL.PREFIX_ID' , 'QUOTA_T_PREFIX.PREFIX_CODE')
+                            ->where('POSITION_CODE','00002')
+                            ->get()->toArray();
 
         foreach ($DataCourse as $dc) {
             if ($dc["COURSE_CODE"] == $id) {
@@ -104,9 +110,9 @@ class ctl_manage_course extends Controller
             $LEARNING_DATE_TYPE = $request->get('LearningTime');
             $COURSE_NAME_TH = $request->get('course_th');
             $COURSE_NAME_EN = $request->get('course_en');
-            $DESCRIPTION_DETAIL = $request->get('course_description');
-            $LEARNING_LIST = $request->get('learning_list');
-            $QUALIFICATION_REQ = $request->get('qualification_req');
+            $DESCRIPTION_DETAIL = str_replace("\r\n" , "<br>" , $request->get('course_description')) ;
+            $LEARNING_LIST = str_replace("\r\n" , "<br>" , $request->get('learning_list'));
+            $QUALIFICATION_REQ = str_replace("\r\n" , "<br>" , $request->get('qualification_req'));
             $UPDATE_USER_ID = Auth::user()->id;
             $COURSE_CODE = $request->get('course_code');
 

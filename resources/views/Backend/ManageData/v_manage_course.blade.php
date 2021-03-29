@@ -97,7 +97,7 @@
             <select name="personOfCourse" id="psnOCourse" class="form-control Select2Class" style="width: 100%" required>
                 <option selected="" disabled value=""></option>
                 @foreach ($personOfCourse as $psCourse)
-                    <option value="{{ $psCourse["PERSONNEL_CODE"] }}">{{ $psCourse["NAME_TH"] }}</option>
+                    <option value="{{ $psCourse->PERSONNEL_CODE }}">{{ $psCourse->PREFIX_NAME_TH }}{{ $psCourse->NAME_TH }}</option>
                 @endforeach
             </select>
         </div>
@@ -189,10 +189,10 @@
                                 <option selected="" disabled value=""></option>
 
                                 @foreach ($personOfCourse as $psCourse)
-                                    @if ($returnData["COURSE_HEAD_CODE"] == $psCourse["PERSONNEL_CODE"])
-                                        <option value="{{ $psCourse["PERSONNEL_CODE"] }}" selected>{{ $psCourse["NAME_TH"] }}</option>
+                                    @if ($returnData["COURSE_HEAD_CODE"] == $psCourse->PERSONNEL_CODE)
+                                        <option value="{{ $psCourse->PERSONNEL_CODE }}" selected>{{ $psCourse->PREFIX_NAME_TH }}{{ $psCourse->NAME_TH }}</option>
                                     @else
-                                        <option value="{{ $psCourse["PERSONNEL_CODE"] }}">{{ $psCourse["NAME_TH"] }}</option>
+                                        <option value="{{ $psCourse->PERSONNEL_CODE }}">{{ $psCourse->PREFIX_NAME_TH }}{{ $psCourse->NAME_TH }}</option>
                                     @endif
                                 @endforeach
                             </select>
@@ -237,7 +237,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="course_type">
+                            <label for="LearningTime">
                                 ระยะเวลาเรียน :
                             </label>
                             <select name="LearningTime" id="ln_Time" class="form-control Select2Class" style="width: 100%" required>
@@ -262,27 +262,21 @@
                             <label for="course_description">
                                 คำอธิบายหลักสูตร (พอสังเขป) :
                             </label>
-                            <textarea name="course_description" class="form-control" cols="30" rows="5" maxlength="2000" placeholder="อธิบายหลักสูตร" required>
-                                {{ str_replace("<br>" , "\n" , $returnData["DESCRIPTION_DETAIL"]) }}
-                            </textarea>
+                            <textarea name="course_description" class="form-control" cols="30" rows="5" maxlength="2000" placeholder="123" required>{{ $returnData["DESCRIPTION_DETAIL"] }}</textarea>
                         </div>
                         <div class="form-group">
                             <label for="learning_list">
                                 รายวิชาหลักของหลักสูตร :
                                 <div style="color: red"><h6>ระบุเป็นข้อ เช่น - วิชาคอมพิวเตอร์เบื้องต้น</h6></div>
                             </label>
-                            <textarea name="learning_list" class="form-control" cols="30" rows="5" maxlength="2000" placeholder="วิชาหลักของหลักสูตร" required>
-                                {{ str_replace("<br>" , "\n" , $returnData["LEARNING_LIST"]) }}
-                            </textarea>
+                            <textarea name="learning_list" class="form-control" cols="30" rows="5" maxlength="2000" placeholder="วิชาหลักของหลักสูตร" required>{{ str_replace("<br>" , "\n" , $returnData["LEARNING_LIST"]) }}</textarea>
                         </div>
                         <div class="form-group">
                             <label for="qualification_req">
                                 คุณสมบัติเบื้องต้นของผู้สมัคร :
                                 <div style="color: red"><h6>ระบุเป็นข้อ เช่น - จบการศึกษาระดับ ม.6</h6></div>
                             </label>
-                            <textarea name="qualification_req" class="form-control" cols="30" rows="5" maxlength="2000" placeholder="คุณสมบัติเบื้องต้นของผู้สมัคร" required>
-                                {{ str_replace("<br>" , "\n" , $returnData["QUALIFICATION_REQ"]) }}
-                            </textarea>
+                            <textarea name="qualification_req" class="form-control" cols="30" rows="5" maxlength="2000" placeholder="คุณสมบัติเบื้องต้นของผู้สมัคร" required>{{ str_replace("<br>" , "\n" , $returnData["QUALIFICATION_REQ"]) }}</textarea>
                         </div>
                 @endsection
                 {{-- Update Data Modal --}}
