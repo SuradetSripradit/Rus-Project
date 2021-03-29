@@ -80,7 +80,7 @@ body {
     line-height: 1.5;
     color: #000000;
     text-align: left;
-    background-color: rgb(64, 5, 92);
+    background-color: rgba(116, 89, 2, 0.904);
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {

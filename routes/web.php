@@ -11,12 +11,15 @@ use App\Models\anouncements;
 use App\Models\course;
 use App\Models\personnel;
 use App\Models\User;
-    use Illuminate\Support\Facades\Route;
+use GuzzleHttp\RetryMiddleware;
+use Illuminate\Support\Facades\Route;
     use Illuminate\Support\Facades\Auth;
     use Illuminate\Support\Facades\DB;
+    use Illuminate\Support\Facades\Storage;
 
 Route::get('/', function () {
 // Show course type in menu list
+    $unique_course = course::all()->where('ACTIVE_FLAG' , 'Y')->toArray();
     $course_type = course::select('COURSE_TYPE')->where('ACTIVE_FLAG' , 'Y')->distinct()->get()->toArray();
     $course_name = course::select(
         'COURSE_CODE' ,
@@ -34,7 +37,7 @@ Route::get('/', function () {
     $promote_course = DB::select($tmp_query);
 
 // return page
-    return view('Frontend.main' , compact('course_type' , 'course_name' , 'promote_course'));
+    return view('Frontend.main' , compact('course_type' , 'course_name' , 'unique_course' , 'promote_course'));
 });
 
 // Route::get('/anouncement', function () {
@@ -51,9 +54,19 @@ Route::get('/', function () {
 // });
 
 Route::resource('/anouncements', ctl_show_anouncements::class);
+Route::get('GetImage/{id}', function ($id) {
+    $tmp_image = public_path("assets/img/PromoteImage_path/$id");
+    $ImageName = $id;
+
+    $headers = [
+        "file_type" => 'png'
+    ];
+    return response()->download($tmp_image, $ImageName, $headers);
+});
 
 Route::get('/personnel', function () {
 // Show course type in menu list
+    $unique_course = course::all()->where('ACTIVE_FLAG' , 'Y')->toArray();
     $course_type = course::select('COURSE_TYPE')->where('ACTIVE_FLAG' , 'Y')->distinct()->get()->toArray();
     $course_name = course::select(
         'COURSE_CODE' ,
@@ -61,18 +74,24 @@ Route::get('/personnel', function () {
         'COURSE_NAME_TH'
     )->where('ACTIVE_FLAG' , 'Y')->distinct()->get()->toArray();
 
-    $personnel = DB::select(
+    $tmp_personnel = DB::select(
         "SELECT *
         FROM QUOTA_T_PERSONNEL PS
             LEFT JOIN QUOTA_T_PREFIX PF
                 ON PS.PREFIX_ID = PF.PREFIX_CODE
+			LEFT JOIN QUOTA_T_POSITION POS
+				ON PS.POSITION_CODE = POS.POSITION_CODE
         WHERE PF.ACTIVE_FLAG = 'Y'
-        ORDER BY POSITION_CODE DESC"
+        ORDER BY PS.POSITION_CODE DESC"
     );
-    $anouncement = anouncements::all()->where('ACTIVE_FLAG' , 'Y')->toArray();
+
+    $personnel = array_chunk($tmp_personnel , 3);
 
 // return page
-    return view('Frontend.personnel.index' , compact('course_type' , 'course_name' , 'anouncement' , 'personnel'));
+    return view('Frontend.personnel.index' , compact(
+        'course_type' , 'course_name' , 'unique_course' ,
+        'personnel'
+    ));
 });
 
 Route::get('course/{id}', function ($id) {
@@ -84,10 +103,20 @@ Route::get('course/{id}', function ($id) {
         'COURSE_NAME_TH'
     )->where('ACTIVE_FLAG' , 'Y')->distinct()->get()->toArray();
 
-    $unique_course = course::all()->where('COURSE_CODE' , $id)->toArray();
+    $unique_course = course::all()->where('ACTIVE_FLAG' , 'Y')->where('COURSE_CODE' , $id)->toArray();
 
 // return page
     return view('Frontend.course.Index' , compact('course_type' , 'course_name' , 'unique_course'));
+});
+
+Route::get('promote-image/{id}', function ($id) {
+    $tmp_image = public_path("assets/img/PromoteCourse/$id");
+    $ImageName = $id;
+
+    $headers = [
+        "file_type" => 'png'
+    ];
+    return response()->download($tmp_image, $ImageName, $headers);
 });
 
 Auth::routes();
@@ -117,6 +146,8 @@ Auth::routes();
         Route::get('Manage-Course/update', [ctl_manage_course::class , 'courseUpdate']);
 
         Route::resource('/Manage-Anouncements', ctl_manage_anouncements::class);
+
+        /* Anouncements Group */
 
         Route::resource('/SummaryReport', control_show_report::class);
     });

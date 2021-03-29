@@ -24,6 +24,10 @@
                             </h5>
                             @foreach ($course_name as $course_name_list)
                                 @if ($course_name_list["COURSE_TYPE"] == $course_type_list["COURSE_TYPE"])
+                                    @php
+                                        $course_md = "#md_" . $course_name_list['COURSE_CODE'];
+                                    @endphp
+
                                     <a class="dropdown-item" href="{{ url('course' , $course_name_list['COURSE_CODE']) }}">
                                         {{ $course_name_list["COURSE_NAME_TH"] }}
                                     </a>
@@ -34,7 +38,6 @@
             </div>
         </li>
     </ul>
-
 @endsection
 
 @section('BodyZone')
@@ -48,5 +51,14 @@
 @endsection
 
 @section('JsFunction')
+    <script>
+        function ShowCourseModal(GetMdCode) {
+            $(function() {
+                    $(GetMdCode).modal({
+                        backdrop: "static"
+                    }, 'show');
+                });
+        }
+    </script>
     @yield('FncJs')
 @endsection

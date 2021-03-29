@@ -31,7 +31,7 @@
 
                         <!-- The slideshow -->
                         <div class="carousel-inner">
-                            {{-- <div class="carousel-item active">
+                            <div class="carousel-item active">
                             <img src="{{ asset('assets/img/01.jpg') }}" alt="Los Angeles" width="100%" height="600px">
                             </div>
                             <div class="carousel-item">
@@ -39,7 +39,7 @@
                             </div>
                             <div class="carousel-item">
                             <img src="{{ asset('assets/img/03.jpg') }}" alt="New York" width="100%" height="600px">
-                            </div> --}}
+                            </div>
                         </div>
 
                         <!-- Left and right controls -->

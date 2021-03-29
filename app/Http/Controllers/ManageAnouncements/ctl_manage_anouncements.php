@@ -27,6 +27,8 @@ class ctl_manage_anouncements extends Controller
 
     public function store(Request $request)
     {
+        // dd($request , $request->get('anc_promote_image'));
+
         /* Declare variable */
         $valid_file_flag = $request->get('anc_file_type_list');
         $valid_image = $request->get('anc_promote_image');
@@ -49,7 +51,7 @@ class ctl_manage_anouncements extends Controller
                 return redirect()->route('Manage-Anouncements.index')->with('error' , 'ขนาดไฟล์สูงสุดที่รับได้คือ 5MB');
             } else {
                 $file_name = $new_id . "-" . $request->anc_file->getClientOriginalName();
-                $filePath = $request->file('anc_file')->storeAs('anouncements_path', $file_name, 'public');
+                $filePath = $request->file('anc_file')->storeAs('ext_file/anouncements_path', $file_name, 'public');
             }
         } elseif ($valid_file_flag == "L") {
             $get_link = $request->get('anc_link');
@@ -59,16 +61,17 @@ class ctl_manage_anouncements extends Controller
             $file_name = null;
         }
 
-        if ($valid_image == "Y") {
+        if ($valid_image != null) {
             $chk_img_size = $request->file('PromoteImage')->getSize();
             if (($chk_img_size / 1000000) > 5) {
                 return redirect()->route('Manage-Anouncements.index')->with('error' , 'ขนาดรูปสูงสุดที่รับได้คือ 5MB');
             } else {
                 $img_name = $new_id . "-" . $request->PromoteImage->getClientOriginalName();
-                $imgPath = $request->file('PromoteImage')->storeAs('PromoteImage_path', $img_name, 'public');
+                $imgPath = $request->file('PromoteImage')->storeAs('img/PromoteImage_path', $img_name, 'public');
             }
         } else {
             $img_name = null;
+            $valid_image = "N";
         }
 
         $anouncments_res = new anouncements([
@@ -80,7 +83,7 @@ class ctl_manage_anouncements extends Controller
             "FILE_FLAG" => $request->get('anc_file_type_list') ,
             "FILE_NAME" => $file_name ,
             "ANC_LINK" => $get_link ,
-            "IMG_FLAG" => $request->get('anc_promote_image') ,
+            "IMG_FLAG" => $valid_image ,
             "IMG_NAME" => $img_name ,
             "ANC_TAG" => "ทดสอบ" ,
             "UPDATE_USER_ID" => DB::raw("LPAD(". Auth::user()->id . " , 5 , '0')")

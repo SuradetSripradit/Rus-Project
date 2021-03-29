@@ -24,7 +24,11 @@ class ctl_show_anouncements extends Controller
         )->where('ACTIVE_FLAG' , 'Y')->distinct()->get()->toArray();
 
         // Show Data In page
-        $anouncementsHeader = DB::select($this->CallAnounce('',''));
+        $anouncementsHeader_tmp = DB::select($this->CallAnounce('',''));
+
+        $anouncementsHeader = array_chunk($anouncementsHeader_tmp , 3);
+
+        // dd($anouncementsHeader);
 
     // return page
         return view('Frontend.anouncements.index' , compact(
@@ -59,11 +63,7 @@ class ctl_show_anouncements extends Controller
         // Prepare variable
 
         $query = DB::raw(
-            "SELECT DISTINCT(ANC_CODE)
-                        , ANC_HEADER
-                        , ANC_DETAIL
-                        , EFFT_DATE
-                        , EXP_DATE
+            "SELECT *
             FROM QUOTA_T_ANOUNCEMENT
             WHERE $condition1 (EXP_DATE >= DATE_FORMAT('$exp_date' , '%Y-%m-%d') OR EXP_DATE IS NULL) AND ACTIVE_FLAG = 'Y'"
         );

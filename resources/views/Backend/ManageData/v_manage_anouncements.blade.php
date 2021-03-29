@@ -37,8 +37,8 @@
         <tr>
             <td>{{ $CNT_ROW }}</td>
             <td>{{ $anc["ANC_HEADER"] }}</td>
-            <td>{{ $anc["EFFT_DATE"] }}</td>
-            <td>{{ $anc["EXP_DATE"] }}</td>
+            <td>{{ date('d-m-Y', strtotime("+543 years", strtotime($anc['EFFT_DATE']))) }}</td>
+            <td>{{ date('d-m-Y', strtotime("+543 years", strtotime($anc["EXP_DATE"]))) }}</td>
             <td>
                 <div class="col">
                     <form action="{{ route('Manage-Anouncements.destroy' , strval($anc['ANC_CODE'])) }}"
@@ -80,7 +80,26 @@
             <textarea name="anc_detail" class="form-control" cols="30" rows="5" maxlength="2000" placeholder="เนื้อหาข่าวประชาสัมพันธ์" required></textarea>
         </div>
         <div class="form-group">
+            <label for="anc_link">
+                โปสเตอร์ข่าว : <div style="color: red">* เฉพาะไฟล์รูปเท่านั้น</div>
+            </label>
+            <div class="custom-file">
+                <input type="file" name="PromoteImage" class="custom-file-input" id="promote_image" onchange="SetImageFlag()">
+                <label class="custom-file-label" for="anc_file_id">เพิ่มรูปโปสเตอร์</label>
+            </div>
+        </div>
+        <div class="form-group">
             <label for="anc_promote_image">
+                แสดงภาพโปรโมทในหน้าหลัก :
+            </label>
+            <select id="anc_promote_image_id" name="anc_promote_image" class="custom-select" disabled>
+                <option disabled selected="">--- เลือกประเภทการแสดงผลภาพ ---</option>
+                <option value="Y">แสดงภาพในหน้าหลัก</option>
+                <option value="N">ไม่แสดงภาพในหน้าหลัก</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="anc_tag">
                 หมวดหมู่ข่าวประชาสัมพันธ์ :
             </label>
             <select id="anc_tag_id" name="anc_tag" class="custom-select" required>
@@ -115,28 +134,9 @@
         </div>
         <div class="form-group">
             <label for="anc_promote_image">
-                แสดงภาพโปรโมทในหน้าหลัก :
-            </label>
-            <select id="anc_promote_image_id" name="anc_promote_image" class="custom-select" onchange="showenableImage()" required>
-                <option selected disabled="" value="">-- เลือกการโปรโมทในหน้าหลัก --</option>
-                <option value="Y">แสดง</option>
-                <option value="N">ไม่แสดง</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="anc_link">
-                รูปโปรโมท :
-            </label>
-            <div class="custom-file">
-                <input type="file" name="PromoteImage" class="custom-file-input" id="promote_image" disabled>
-                <label class="custom-file-label" for="anc_file_id">เพิ่มรูปโปรโมท</label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="anc_promote_image">
                 วันที่แสดงข่าวประชาสัมพันธ์ :
             </label>
-            <input type="date" class="form-control" value="{{ date('Y-m-d') }}" id="efft_date_id" name="efft_date">
+            <input type="date" class="form-control" value="{{ date('Y-m-d', strtotime("+543 years", strtotime(date('Y-m-d')))) }}" id="efft_date_id" name="efft_date">
         </div>
         <div class="form-group">
             <label for="anc_promote_image">
@@ -148,7 +148,7 @@
             </select>
             <br>
             <br>
-            <input type="date" class="form-control" value="{{ date('Y-m-d') }}" id="exp_date_id" name="exp_date">
+            <input type="date" class="form-control" value="{{ date('Y-m-d', strtotime("+543 years", strtotime(date('Y-m-d')))) }}" id="exp_date_id" name="exp_date">
         </div>
     @endsection
 
@@ -165,6 +165,8 @@
 
 @section('ExternalJS')
     <script>
+
+
         function ShowANCFileList() {
             var option_val = document.getElementById("anc_file_type").value;
             if (option_val == "N") {
@@ -182,15 +184,25 @@
             }
         }
 
-        function showenableImage() {
-            var promote_image = document.getElementById("anc_promote_image_id").value;
-
-            if (promote_image == "N") {
-                document.getElementById("promote_image").disabled = true;
-            } else if (promote_image == "Y") {
-                document.getElementById("promote_image").disabled = false;
+        function SetImageFlag() {
+            var ElementsName = document.getElementById("promote_image").value;
+            var tmp_file_name = ElementsName.split("\\");
+            var length = tmp_file_name.length -1;
+            var chk_name = tmp_file_name[length];
+            if (chk_name != "") {
+                document.getElementById("anc_promote_image_id").disabled = false;
             }
         }
+
+        // function showenableImage() {
+        //     var promote_image = document.getElementById("anc_promote_image_id").value;
+
+        //     if (promote_image == "N") {
+        //         document.getElementById("promote_image").disabled = true;
+        //     } else if (promote_image == "Y") {
+        //         document.getElementById("promote_image").disabled = false;
+        //     }
+        // }
 
         function checkExpDate() {
             var exp_date_list = document.getElementById("exp_type_date_id").value;
@@ -221,12 +233,17 @@
             var exp_date = formData.elements.namedItem("exp_date").value;
         // set result form
             var valid_file = false , valid_image = false , valid_date = false;
+            console.log(formData.elements.namedItem("anc_tag").value);
 
             if (
                 formData.elements.namedItem("anc_header").value == "" ||
                 formData.elements.namedItem("anc_detail").value == ""
             ) {
                 swal("ไม่สามารถเพิ่มข้อมูลได้" , "โปรดเพิ่มข้อมูลหัวข้อและเนื้อหาของข่าวประชาสัมพันธ์ !" , "error");
+            } else if(formData.elements.namedItem("anc_tag").value == ""){
+                swal("ไม่สามารถเพิ่มข้อมูลได้" , "โปรดเลือกหมวดหมู่ข่าวประชาสัมพันธ์ !" , "error");
+            } else if (formData.elements.namedItem("anc_file_type_list").value == "") {
+                swal("ไม่สามารถเพิ่มข้อมูลได้" , "โปรดเลือกประเภทเอกสารแนบ !" , "error");
             } else {
                 // validate file
                 if (file_type_list == "A" && (file_type_desc =="" || link_type_desc == "")) {
@@ -240,11 +257,13 @@
                 }
 
                 // validate image
-                if (image_promote_list == "Y" && image_promote_desc == "") {
-                    swal("ไม่สามารถเพิ่มข้อมูลได้" , "โปรดเพิ่มข้อมูลภาพโปรโมทให้ครบถ้วน !" , "error");
+                if (image_promote_desc != "" && image_promote_list == "") {
+                    swal("ไม่สามารถเพิ่มข้อมูลได้" , "โปรดเลือกประเภทการแสดงภาพโปรโมทให้ครบถ้วน !" , "error");
                 } else {
                     valid_image = true;
                 }
+
+
 
                 // validate date
                 if (exp_flag == "Y") {
