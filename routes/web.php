@@ -11,6 +11,7 @@ use App\Models\anouncements;
 use App\Models\class_level;
 use App\Models\course;
 use App\Models\personnel;
+use App\Models\prefix;
 use App\Models\User;
 use GuzzleHttp\RetryMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -108,8 +109,29 @@ Route::get('course/{id}', function ($id) {
     $unique_course = course::all()->where('ACTIVE_FLAG' , 'Y')->where('COURSE_CODE' , $id)->toArray();
     $class_level = class_level::all()->toArray();
 
+// Data for application form
+    $person_data = DB::select(
+        "SELECT DISTINCT(PERSONNEL_CODE) AS PERSONNEL_CODE , CONCAT(PREFIX_NAME_TH , ' ' , NAME_TH) AS PERSONNEL_NAME
+        FROM QUOTA_T_PERSONNEL PS
+            LEFT JOIN QUOTA_T_PREFIX PF
+                ON PS.PREFIX_ID = PF.PREFIX_CODE
+			LEFT JOIN QUOTA_T_POSITION POS
+				ON PS.POSITION_CODE = POS.POSITION_CODE
+        WHERE PF.ACTIVE_FLAG = 'Y' AND PS.NAME_TH NOT LIKE '%ผู้ดูแลระบบ%' AND PS.POSITION_CODE IN ('00001','00002')
+        ORDER BY PS.POSITION_CODE DESC"
+    );
+
+    $prefix = prefix::all()->where('ACTIVE_FLAG' , 'Y');
+
 // return page
-    return view('Frontend.course.Index' , compact('course_type' , 'course_name' , 'unique_course' , 'class_level'));
+    return view('Frontend.course.Index' , compact(
+        'course_type' ,
+        'course_name' ,
+        'unique_course' ,
+        'class_level' ,
+        'person_data' ,
+        'prefix'
+    ));
 });
 
 Route::get('promote-image/{id}', function ($id) {

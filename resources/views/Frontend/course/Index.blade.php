@@ -19,7 +19,6 @@
         <section class="about-section text-center" id="about">
         <div class="container">
             <div class="row">
-                {{-- {{ dd($unique_course) }} --}}
                     <div class="col-lg-12 mx-auto">
                         @php
                             if ($course["IMAGE_UPLOAD_DET"] == "" or $course["IMAGE_UPLOAD_DET"] == null) {
@@ -28,7 +27,18 @@
                                 $img = $course["IMAGE_UPLOAD_DET"];
                             }
                         @endphp
-                        <h3 class="text-white mb-4">สาขาวิชา {{ $course["COURSE_NAME_TH"] }} <br> [ {{ $course["COURSE_NAME_EN"] }} ]</h3>
+                        <h3 class="text-white mb-4">
+                            สาขาวิชา {{ $course["COURSE_NAME_TH"] }}
+                            (
+                                @if ($course["COURSE_TYPE"] == "T")
+                                    หลักสูตรเทียบโอน
+                                @elseif ($course["COURSE_TYPE"] == "R")
+                                    หลักสูตรปกติ
+                                @endif
+                            )
+                            <br>
+                            [ {{ $course["COURSE_NAME_EN"] }} ]
+                        </h3>
                     </div>
                     <br>
                     <div class="container" style="background-color: white">
@@ -62,6 +72,7 @@
                             <div class="col-sm-12 text-center">
                                 <br>
                                 <button class="btn-lg btn-success mx-auto" id="ShowVerify">สมัครเรียน</button>
+                                <button data-toggle="modal" data-target="#Register_Modal">Test</button>
                             </div>
                         </div>
                         <br>
@@ -115,13 +126,54 @@
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                <h5 class="modal-title">การตรวจสอบคุณสมบัติผู้สมัคร</h5>
+                <h5 class="modal-title">แบบฟอร์มสมัครเข้าศึกษา</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
                 <!-- Modal body -->
                 <div class="modal-body">
-                    Test
+                    <form action="#">
+                    {{-- ข้อมูลผู้แนะนำ --}}
+                        <div class="col-sm-12 mx-auto text-left"><b>ข้อมูลเจ้าหน้าที่ที่แนะนำ : </b></div>
+                        <br>
+                        <div class="container">
+                            <div class="col-sm-12">
+                                <label for="selectPersonnelID">
+                                    อาจารย์ / เจ้าหน้าที่ ที่แนะนำ :
+                                </label>
+                                <select name="selectPersonnel" id="selectPersonnelID" class="form-control" style="width: 100%" required>
+                                    <option value="" selected="" disabled>--- เลือกอาจารย์ / เจ้าหน้าที่ ---</option>
+                                    @foreach ($person_data as $ps)
+                                        <option value="{{ $ps->PERSONNEL_CODE }}">{{ $ps->PERSONNEL_NAME }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                    {{-- ข้อมูลผู้สมัคร --}}
+                    <br>
+                        <div class="col-sm-12 mx-auto text-left"><b>ข้อมูลทั่วไปของผู้สมัคร : </b></div>
+                        <br>
+                        <div class="container">
+                            <div class="col-sm-12">
+                                <label for="prefixID">
+                                    คำนำหน้าชื่อ :
+                                </label>
+                                <select name="prefix" id="prefixID" class="form-control" style="width: 100%" required>
+                                    <option value="" selected="" disabled>--- เลือกคำนำหน้า ---</option>
+                                    @foreach ($prefix as $pf)
+                                        <option value="{{ $pf->PREFIX_CODE }}">{{ $pf->PREFIX_NAME_TH }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <br>
+                            <div class="col-sm-12">
+                                <label for="regist_name">ชื่อ - นามสกุล (ไทย) ผู้สมัคร : </label>
+                                <input type="text" class="form-control" name="f_name_t" id="first_name_thai" placeholder="ชื่อผู้สมัคร (ไทย)" required>
+                                <input type="text" class="form-control" name="l_name_t" id="last_name_thai" placeholder="นามสกุล (ไทย)" required>
+                            </div>
+                        </div>
+                    </form>
                 </div>
 
                 <!-- Modal footer -->
@@ -162,8 +214,16 @@
                             backdrop: "static"
                         }, 'show');
                     }
-                } else {
+                } else if(chk_type == "R") {
+                    if (selectData != "01") {
+                        swal("ล้มเหลว!", "ระดับการศึกษาที่จบยังไม่สามารถสมัครสาขานี้ได้ โปรดเลือกใหม่อีกครั้ง", "warning");
+                    } else {
+                        $("#Verify_register").modal('hide');
 
+                        $("#Register_Modal").modal({
+                            backdrop: "static"
+                        }, 'show');
+                    }
                 }
             }
         </script>
