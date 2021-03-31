@@ -12,6 +12,7 @@ use App\Models\class_level;
 use App\Models\course;
 use App\Models\personnel;
 use App\Models\prefix;
+use App\Models\school;
 use App\Models\User;
 use GuzzleHttp\RetryMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -107,7 +108,6 @@ Route::get('course/{id}', function ($id) {
     )->where('ACTIVE_FLAG' , 'Y')->distinct()->get()->toArray();
 
     $unique_course = course::all()->where('ACTIVE_FLAG' , 'Y')->where('COURSE_CODE' , $id)->toArray();
-    $class_level = class_level::all()->toArray();
 
 // Data for application form
     $person_data = DB::select(
@@ -122,6 +122,8 @@ Route::get('course/{id}', function ($id) {
     );
 
     $prefix = prefix::all()->where('ACTIVE_FLAG' , 'Y');
+    $class_level = class_level::all()->toArray();
+    $school = school::all()->where('ACTIVE_FLAG' , 'Y')->toArray();
 
 // return page
     return view('Frontend.course.Index' , compact(
@@ -130,7 +132,8 @@ Route::get('course/{id}', function ($id) {
         'unique_course' ,
         'class_level' ,
         'person_data' ,
-        'prefix'
+        'prefix' ,
+        'school'
     ));
 });
 

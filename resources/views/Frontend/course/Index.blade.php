@@ -126,7 +126,7 @@
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                <h5 class="modal-title">แบบฟอร์มสมัครเข้าศึกษา</h5>
+                <h5 class="modal-title">แบบฟอร์มสมัครโควต้าสำหรับนักศึกษา</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
@@ -151,7 +151,7 @@
                         </div>
 
                     {{-- ข้อมูลผู้สมัคร --}}
-                    <br>
+                        <br>
                         <div class="col-sm-12 mx-auto text-left"><b>ข้อมูลทั่วไปของผู้สมัคร : </b></div>
                         <br>
                         <div class="container">
@@ -168,18 +168,156 @@
                             </div>
                             <br>
                             <div class="col-sm-12">
-                                <label for="regist_name">ชื่อ - นามสกุล (ไทย) ผู้สมัคร : </label>
-                                <input type="text" class="form-control" name="f_name_t" id="first_name_thai" placeholder="ชื่อผู้สมัคร (ไทย)" required>
-                                <input type="text" class="form-control" name="l_name_t" id="last_name_thai" placeholder="นามสกุล (ไทย)" required>
+                                <label for="regist_name_thai">ชื่อ - นามสกุลผู้สมัคร : (ไทย) </label>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="f_name_t" id="first_name_thai" placeholder="ชื่อผู้สมัคร (ไทย)" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="l_name_t" id="last_name_thai" placeholder="นามสกุล (ไทย)" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <label for="regist_name_eng">ชื่อ - นามสกุลผู้สมัคร :  (อังกฤษ)</label>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="f_name_e" id="first_name_eng" placeholder="ชื่อผู้สมัคร (อังกฤษ)" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="l_name_e" id="last_name_eng" placeholder="นามสกุล (อังกฤษ)" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <label for="id_card">บัตรประจำตัวประชาชน : </label>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="id_card" id="id_card_id" placeholder="รหัสบัตรประชาชน 13 หลัก" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <label for="prefixID">
+                                    เพศ :
+                                </label>
+                                <select name="gender" id="genderID" class="form-control" style="width: 100%" required>
+                                    <option value="" selected="" disabled>--- เลือกเพศ ---</option>
+                                    <option value="F">เพศหญิง</option>
+                                    <option value="M">เพศชาย</option>
+                                </select>
                             </div>
                         </div>
+                    {{-- ข้อมูลการศึกษา --}}
+                        <br>
+                        <div class="col-sm-12 mx-auto text-left"><b>ข้อมูลการศึกษา : </b></div>
+                        <br>
+                        <div class="container">
+                            <div class="col-sm-12">
+                                <label for="learning_level">
+                                    ระดับการศึกษา :
+                                </label>
+                                <div class="form-group">
+                                    <select name="learning_level" id="learning_levelID" class="form-control" style="width: 100%" required>
+                                        <option value="" selected="" disabled>--- เลือกระดับการศึกษา ---</option>
+                                        @foreach ($class_level as $cl)
+                                            <option value="{{ $cl["CLASS_LEVEL_CODE"] }}">{{ $cl["CLASS_LEVEL_NAME_TH"] }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <label for="school">
+                                    สถานศึกษา :
+                                </label>
+                                <div class="form-group">
+                                    <select name="school" id="schoolID" class="form-control" style="width: 100%" required>
+                                        <option value="" selected="" disabled>--- เลือกสถานศึกษา ---</option>
+                                        @foreach ($school as $sc)
+                                            <option value="{{ $sc["SCHOOL_CODE"] }}">{{ $sc["SCHOOL_NAME_TH"] }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <label for="gpa">
+                                    คะแนนเฉลี่ย :
+                                </label>
+                                <div class="form-group">
+                                    <input type="number" class="form-control" max="4.0" step="0.01" name="gpa" id="gpaID" required>
+                                </div>
+                            </div>
+                        </div>
+                    {{-- ข้อมูลการติดต่อ --}}
+                    <br>
+                    <div class="col-sm-12 mx-auto text-left"><b>ข้อมูลการติดต่อ : </b></div>
+                    <br>
+                    <div class="container">
+                        <div class="col-sm-12">
+                            <label for="addr_no">
+                                บ้านเลขที่ :
+                            </label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="addr_no" id="addr_noID" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <label for="province">
+                                จังหวัด :
+                            </label>
+                            <div class="form-group">
+                                <select name="province" id="provinceID" class="form-control" style="width: 100%" required>
+                                    <option value="" selected="" disabled>--- เลือกจังหวัด ---</option>
+                                    @foreach ($school as $sc)
+                                        <option value="{{ $sc["SCHOOL_CODE"] }}">{{ $sc["SCHOOL_NAME_TH"] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <label for="district">
+                                อำเภอ :
+                            </label>
+                            <div class="form-group">
+                                <select name="district" id="districtID" class="form-control" style="width: 100%" required>
+                                    <option value="" selected="" disabled>--- เลือกอำเภอ ---</option>
+                                    @foreach ($school as $sc)
+                                        <option value="{{ $sc["SCHOOL_CODE"] }}">{{ $sc["SCHOOL_NAME_TH"] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <label for="sub-districtID">
+                                ตำบล :
+                            </label>
+                            <div class="form-group">
+                                <select name="sub-district" id="sub-districtID" class="form-control" style="width: 100%" required>
+                                    <option value="" selected="" disabled>--- เลือกตำบล ---</option>
+                                    @foreach ($school as $sc)
+                                        <option value="{{ $sc["SCHOOL_CODE"] }}">{{ $sc["SCHOOL_NAME_TH"] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <label for="telephone">
+                                เบอร์โทรศัพท์ :
+                            </label>
+                            <div class="form-group">
+                                <input type="tel" name="telephone" id="telephoneID" placeholder="Ex : 0912345678" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <label for="email">
+                                อีเมล์ :
+                            </label>
+                            <div class="form-group">
+                                <input type="email" name="Email" id="EmailID" class="form-control" placeholder="Ex : Example@testDomain.com" required>
+                            </div>
+                        </div>
+                    </div>
                     </form>
                 </div>
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn-sm btn-success" onclick="">ตรวจสอบคุณสมบัติ</button>
-                    <button type="button" class="btn-sm btn-danger" data-dismiss="modal">ยกเลิกการตรวจสอบคุณสมบัติ</button>
+                    <button type="button" class="btn-sm btn-success" onclick="">ยื่นสมัคร</button>
+                    <button type="button" class="btn-sm btn-danger" data-dismiss="modal">ยกเลิกการสมัคร</button>
                 </div>
 
             </div>

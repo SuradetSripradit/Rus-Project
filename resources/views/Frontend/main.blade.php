@@ -8,47 +8,54 @@
             <div class="container">
                 <br>
                 <div class="col-sm-12">
-                    <div id="PromoteCoure" class="carousel slide" data-ride="carousel">
+                    <div id="PromoteCourse" class="carousel slide" data-ride="carousel">
+                        @php
+                            $cnt = 0;
+                        @endphp
+                        @foreach ($promote_course as $pc)
+                            <!-- Indicators -->
+                            <ul class="carousel-indicators">
+                                @if ($cnt == 0)
+                                    <li data-target="#PromoteCourse" data-slide-to="{{ $cnt }}" class="active"></li>
+                                @else
+                                    <li data-target="#PromoteCourse" data-slide-to="{{ $cnt }}"></li>
+                                @endif
+                            </ul>
 
-                        <!-- Indicators -->
-                        {{-- <ul class="carousel-indicators">
+                            <!-- The slideshow -->
+                            <div class="carousel-inner">
+                                @php
+                                    if ($pc->IMG_NAME == "" or $pc->IMG_NAME == null) {
+                                        $img = "00000-NoImage.jpg";
+                                    } else {
+                                        $img = $pc->IMG_NAME;
+                                    }
+                                @endphp
+                                @if ($cnt == 0)
+                                    <div class="carousel-item active">
+                                        {{ $img }}
+                                        <img src="{{ url('GetImage/' . $img) }}" alt="{{ $pc->ANC_HEADER }}" style="width: 100%;height: 60%;">
+                                    </div>
+                                @else
+                                    <div class="carousel-item">
+                                        <img src="{{ url('GetImage/' . $img) }}" alt="{{ $pc->ANC_HEADER }}" style="width: 100%;height: 60%;">
+                                    </div>
+                                @endif
+                            </div>
+
                             @php
-                                $cnt_slide = 0;
+                                $cnt ++;
                             @endphp
-
-                            @foreach ($promote_course as $PromoteIMG)
-
-                            @if ($cnt_slide == 0)
-                                <li data-target="#PromoteCoure" data-slide-to="0" class="active"></li>
-                            @else
-                                <li data-target="#PromoteCoure" data-slide-to="1"></li>
-                            @endif
-                            @php
-                                $cnt_slide++;
-                            @endphp
-                            @endforeach
-                        </ul> --}}
-
-                        <!-- The slideshow -->
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                            <img src="{{ asset('assets/img/01.jpg') }}" alt="Los Angeles" width="100%" height="600px">
-                            </div>
-                            <div class="carousel-item">
-                            <img src="{{ asset('assets/img/02.jpg') }}" alt="Chicago" width="100%" height="600px">
-                            </div>
-                            <div class="carousel-item">
-                            <img src="{{ asset('assets/img/03.jpg') }}" alt="New York" width="100%" height="600px">
-                            </div>
-                        </div>
-
-                        <!-- Left and right controls -->
-                        <a class="carousel-control-prev" href="#PromoteCoure" data-slide="prev">
+                            <!-- Left and right controls -->
+                        <a class="carousel-control-prev" href="#PromoteCourse" data-slide="prev">
                             <span class="carousel-control-prev-icon"></span>
-                        </a>
-                        <a class="carousel-control-next" href="#PromoteCoure" data-slide="next">
+                          </a>
+                          <a class="carousel-control-next" href="#PromoteCourse" data-slide="next">
                             <span class="carousel-control-next-icon"></span>
-                        </a>
+                          </a>
+                        @endforeach
+
+
 
                     </div>
                 </div>
