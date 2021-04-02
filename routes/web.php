@@ -15,6 +15,7 @@ use App\Models\prefix;
 use App\Models\school;
 use App\Models\User;
 use GuzzleHttp\RetryMiddleware;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
     use Illuminate\Support\Facades\Auth;
     use Illuminate\Support\Facades\DB;
@@ -42,7 +43,7 @@ Route::get('/', function () {
 
 // return page
     return view('Frontend.main' , compact('course_type' , 'course_name' , 'unique_course' , 'promote_course'));
-});
+})->name('MainPage');
 
 // Route::get('/anouncement', function () {
 // // Show course type in menu list
@@ -101,6 +102,7 @@ Route::get('/personnel', function () {
 Route::get('course/{id}', function ($id) {
 // Show course type in menu list
     $course_type = course::select('COURSE_TYPE')->where('ACTIVE_FLAG' , 'Y')->distinct()->get()->toArray();
+    $pass_verify = false;
     $course_name = course::select(
         'COURSE_CODE' ,
         'COURSE_TYPE' ,
@@ -128,11 +130,13 @@ Route::get('course/{id}', function ($id) {
 // return page
     return view('Frontend.course.Index' , compact(
         'course_type' ,
+        'pass_verify' ,
         'course_name' ,
         'unique_course' ,
         'class_level' ,
         'person_data' ,
         'prefix' ,
+        'id' ,
         'school'
     ));
 });

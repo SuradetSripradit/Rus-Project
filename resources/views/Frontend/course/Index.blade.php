@@ -120,19 +120,20 @@
         {{-- Verify Modal  --}}
 
         {{-- Register Modal  --}}
-        <div class="modal fade" id="Register_Modal">
+        <div class="modal fade" id="Register_Modal" tabindex="-1" role="dialog" aria-labelledby="app_form" aria-hidden="true">
             <div class="modal-dialog">
             <div class="modal-content">
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                <h5 class="modal-title">แบบฟอร์มสมัครโควต้าสำหรับนักศึกษา</h5>
+                <h5 class="modal-title" id="app_form">แบบฟอร์มสมัครโควต้าสำหรับนักศึกษา</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
                 <!-- Modal body -->
                 <div class="modal-body">
-                    <form action="#">
+                    <form action="{{ route('ApplicationForm.submit') }}" id="ApplicationForm" method="POST">
+                        <input type="hidden" value="{{ $id }}">
                     {{-- ข้อมูลผู้แนะนำ --}}
                         <div class="col-sm-12 mx-auto text-left"><b>ข้อมูลเจ้าหน้าที่ที่แนะนำ : </b></div>
                         <br>
@@ -238,7 +239,7 @@
                                     คะแนนเฉลี่ย :
                                 </label>
                                 <div class="form-group">
-                                    <input type="number" class="form-control" max="4.0" step="0.01" name="gpa" id="gpaID" required>
+                                    <input type="number" class="form-control" max="4.0" step="0.01" name="gpa" id="gpaID" placeholder="Ex : 4.00" required>
                                 </div>
                             </div>
                         </div>
@@ -248,50 +249,11 @@
                     <br>
                     <div class="container">
                         <div class="col-sm-12">
-                            <label for="addr_no">
-                                บ้านเลขที่ :
+                            <label for="LineID">
+                                ไอดีไลน์ :
                             </label>
                             <div class="form-group">
-                                <input type="text" class="form-control" name="addr_no" id="addr_noID" required>
-                            </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <label for="province">
-                                จังหวัด :
-                            </label>
-                            <div class="form-group">
-                                <select name="province" id="provinceID" class="form-control" style="width: 100%" required>
-                                    <option value="" selected="" disabled>--- เลือกจังหวัด ---</option>
-                                    @foreach ($school as $sc)
-                                        <option value="{{ $sc["SCHOOL_CODE"] }}">{{ $sc["SCHOOL_NAME_TH"] }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <label for="district">
-                                อำเภอ :
-                            </label>
-                            <div class="form-group">
-                                <select name="district" id="districtID" class="form-control" style="width: 100%" required>
-                                    <option value="" selected="" disabled>--- เลือกอำเภอ ---</option>
-                                    @foreach ($school as $sc)
-                                        <option value="{{ $sc["SCHOOL_CODE"] }}">{{ $sc["SCHOOL_NAME_TH"] }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <label for="sub-districtID">
-                                ตำบล :
-                            </label>
-                            <div class="form-group">
-                                <select name="sub-district" id="sub-districtID" class="form-control" style="width: 100%" required>
-                                    <option value="" selected="" disabled>--- เลือกตำบล ---</option>
-                                    @foreach ($school as $sc)
-                                        <option value="{{ $sc["SCHOOL_CODE"] }}">{{ $sc["SCHOOL_NAME_TH"] }}</option>
-                                    @endforeach
-                                </select>
+                                <input type="text" name="LineID" id="LineID_id" placeholder="Ex : @RMUTSBSCI" class="form-control" required>
                             </div>
                         </div>
                         <div class="col-sm-12">
@@ -316,7 +278,7 @@
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn-sm btn-success" onclick="">ยื่นสมัคร</button>
+                    <button type="button" class="btn-sm btn-success" onclick="verifyApplication()">ยื่นสมัคร</button>
                     <button type="button" class="btn-sm btn-danger" data-dismiss="modal">ยกเลิกการสมัคร</button>
                 </div>
 
@@ -346,8 +308,6 @@
                     if (selectData != "02") {
                         swal("ล้มเหลว!", "ระดับการศึกษาที่จบยังไม่สามารถสมัครสาขานี้ได้ โปรดเลือกใหม่อีกครั้ง", "warning");
                     } else {
-                        $("#Verify_register").modal('hide');
-
                         $("#Register_Modal").modal({
                             backdrop: "static"
                         }, 'show');
@@ -356,13 +316,17 @@
                     if (selectData != "01") {
                         swal("ล้มเหลว!", "ระดับการศึกษาที่จบยังไม่สามารถสมัครสาขานี้ได้ โปรดเลือกใหม่อีกครั้ง", "warning");
                     } else {
-                        $("#Verify_register").modal('hide');
-
                         $("#Register_Modal").modal({
                             backdrop: "static"
                         }, 'show');
                     }
                 }
+            }
+
+            function verifyApplication() {
+                var application_formID = document.getElementById("ApplicationForm");
+
+                var validate_
             }
         </script>
     @endsection
