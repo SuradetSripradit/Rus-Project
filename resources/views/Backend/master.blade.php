@@ -70,9 +70,9 @@
                 {{-- Change password Modal --}}
                 @else
                     <ul class="navbar-nav text-uppercase ml-auto">
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" style="color :black" href="/Addadmin"> จัดการข้อมูลผู้สมัคร </a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" style="color :black" href="{{ url('approve') }}"> จัดการข้อมูลผู้สมัคร </a></li>
 
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" style="color :black" href="/SummaryReport"> รายงานสรุปประจำปี </a>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" style="color :black" href="{{ url('dashboard') }}"> รายงานสรุปประจำปี </a>
                         </li>
 
                         <div class="dropdown">

@@ -1,6 +1,8 @@
 <?php
 
     use App\Http\Controllers\Auth\ChangePassword;
+use App\Http\Controllers\ctl_approve_form;
+use App\Http\Controllers\ctl_show_report;
 use App\Http\Controllers\Frontend\ApplicationForm;
 use App\Http\Controllers\Frontend\ctl_show_anouncements;
 use App\Http\Controllers\Frontend\ctl_submit_application;
@@ -46,19 +48,6 @@ Route::get('/', function () {
 // return page
     return view('Frontend.main' , compact('course_type' , 'course_name' , 'unique_course' , 'promote_course'));
 })->name('MainPage');
-
-// Route::get('/anouncement', function () {
-// // Show course type in menu list
-//     $course_type = course::select('COURSE_TYPE')->where('ACTIVE_FLAG' , 'Y')->distinct()->get()->toArray();
-//     $course_name = course::select(
-//         'COURSE_CODE' ,
-//         'COURSE_TYPE' ,
-//         'COURSE_NAME_TH'
-//     )->where('ACTIVE_FLAG' , 'Y')->distinct()->get()->toArray();
-
-// // return page
-//     return view('Frontend.anouncements.index' , compact('course_type' , 'course_name'));
-// });
 
 Route::resource('/anouncements', ctl_show_anouncements::class);
 Route::get('GetImage/{id}', function ($id) {
@@ -166,6 +155,43 @@ Route::get('promote-image/{id}', function ($id) {
     return response()->download($tmp_image, $ImageName, $headers);
 });
 
+Route::post('regist-result', function (Request $request) {
+    $tk = $request->get('_token');
+
+    if ($tk == "" or $tk == null or $tk != csrf_token()) {
+        return redirect()->back()->with('error' , "Token ไม่ถูกต้อง !");
+    } else {
+        $id_register = $request->get('id_card');
+        $course_get = $request->get('selectCourse');
+        $tmp_query = DB::raw(
+            "select distinct(APPLICATION_STATUS) as status
+            from QUOTA_T_APPLICATION
+            where ID_CARD_NUMBER = '$id_register' and COURSE_CODE = '$course_get';"
+        );
+
+        $res = DB::select($tmp_query);
+        $return_desc = "";
+
+        foreach ($res as $tmp_res) {
+            $return_desc = $tmp_res->status;
+        }
+
+        $tmp_return = "";
+
+        if ($return_desc == "W") {
+            $tmp_return = "การสมัครกำลังอยู่ในระหว่างพิจารณา";
+        } elseif ($return_desc == "Y") {
+            $tmp_return = "คุณได้รับอนุมัติในการสมัครโควต้า";
+        } elseif ($return_desc == "N") {
+            $tmp_return = "คุณไม่ได้รับอนุมัติในการสมัครโควต้า";
+        } else {
+            $tmp_return = "ไม่พบข้อมูลตามที่ระบุ โปรดตรวจสอบข้อมูลอีกครั้ง";
+        }
+
+        return redirect()->back()->with('status_app' , $tmp_return);
+    }
+})->name('check-regist-res');
+
 Auth::routes();
 
 // =============================================================================== \\
@@ -196,6 +222,9 @@ Auth::routes();
 
         /* Anouncements Group */
 
-        Route::resource('/SummaryReport', control_show_report::class);
+        // Route::resource('dashboard', [ctl_show_report::class , 'Dashboard']);
+
+        Route::resource('approve', ctl_approve_form::class);
+        Route::post('approve/submit', [ctl_approve_form::class , 'approve_form_application'])->name('approve.submit');
     });
 // =============================================================================== \\
