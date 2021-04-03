@@ -72,7 +72,6 @@
                             <div class="col-sm-12 text-center">
                                 <br>
                                 <button class="btn-lg btn-success mx-auto" id="ShowVerify">สมัครเรียน</button>
-                                <button data-toggle="modal" data-target="#Register_Modal">Test</button>
                             </div>
                         </div>
                         <br>
@@ -132,8 +131,9 @@
 
                 <!-- Modal body -->
                 <div class="modal-body">
-                    <form action="{{ route('ApplicationForm.submit') }}" id="ApplicationForm" method="POST">
-                        <input type="hidden" value="{{ $id }}">
+                    <form action="{{ route('submit.form') }}" id="ApplicationForm" method="POST">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="course_code" value="{{ $id }}">
                     {{-- ข้อมูลผู้แนะนำ --}}
                         <div class="col-sm-12 mx-auto text-left"><b>ข้อมูลเจ้าหน้าที่ที่แนะนำ : </b></div>
                         <br>
@@ -325,8 +325,91 @@
 
             function verifyApplication() {
                 var application_formID = document.getElementById("ApplicationForm");
+                var validate = {
+                    "personnel":false,
+                    "regist_info":false,
+                    "education":false,
+                    "contact":false
+                };
+            // Declare personnel
+                var valid_personnel = {
+                    "personnel_code" : application_formID.elements.namedItem("selectPersonnel").value
+                };
+            // Declare regist_info
+                var valid_regist_info = {
+                    "prefix_code":application_formID.elements.namedItem("prefix").value,
+                    "f_name_th":application_formID.elements.namedItem("f_name_t").value,
+                    "l_name_th":application_formID.elements.namedItem("l_name_t").value,
+                    "id_card":application_formID.elements.namedItem("id_card").value,
+                    "gender":application_formID.elements.namedItem("gender").value
+                };
+            // Declare education
+                var valid_education = {
+                    "class_level":application_formID.elements.namedItem("learning_level").value,
+                    "school":application_formID.elements.namedItem("school").value,
+                    "gpa":application_formID.elements.namedItem("gpa").value
+                };
+            // Declare contact
+                var valid_contact = {
+                    "line_id":application_formID.elements.namedItem("LineID").value,
+                    "telephone":application_formID.elements.namedItem("telephone").value,
+                    "mail":application_formID.elements.namedItem("Email").value
+                };
 
-                var validate_
+            // Validate *personnel
+                if (valid_personnel["personnel_code"] == "" || valid_personnel["personnel_code"] == null) {
+                    swal("ไม่สามารถบันทึกข้อมูลได้" , "โปรดเลือกเจ้าหน้าที่ที่แนะนำ!" , "error");
+                } else {
+                    validate["personnel"] = true;
+                }
+            // Validate *register info
+                if (valid_regist_info["prefix_code"] == "" || valid_regist_info["prefix_code"] == null) {
+                    swal("ไม่สามารถบันทึกข้อมูลได้" , "โปรดเลือกคำนำหน้าชื่อ!" , "error");
+                } else if (valid_regist_info["f_name_th"] == "" || valid_regist_info["f_name_th"] == null) {
+                    swal("ไม่สามารถบันทึกข้อมูลได้" , "โปรดระบุชื่อผู้สมัคร!" , "error");
+                } else if (valid_regist_info["l_name_th"] == "" || valid_regist_info["l_name_th"] == null) {
+                    swal("ไม่สามารถบันทึกข้อมูลได้" , "โปรดระบุนามสกุลผู้สมัคร!" , "error");
+                } else if (valid_regist_info["id_card"] == "" || valid_regist_info["id_card"] == null) {
+                    swal("ไม่สามารถบันทึกข้อมูลได้" , "โปรดระบุเลขบัตรประจำตัวประชาชน!" , "error");
+                } else if (valid_regist_info["gender"] == "" || valid_regist_info["gender"] == null) {
+                    swal("ไม่สามารถบันทึกข้อมูลได้" , "โปรดเลือกเพศ!" , "error");
+                } else {
+                    validate["regist_info"] = true;
+                }
+            // Validate *education
+                if (valid_education["class_level"] == "" || valid_education["class_level"] == null) {
+                    swal("ไม่สามารถบันทึกข้อมูลได้" , "โปรดเลือกระดับการศึกษาที่จบ!" , "error");
+                } else if (valid_education["school"] == "" || valid_education["school"] == null) {
+                    swal("ไม่สามารถบันทึกข้อมูลได้" , "โปรดเลือกสถานศึกษาที่จบ!" , "error");
+                } else if (
+                    valid_education["gpa"] == "" ||
+                    valid_education["gpa"] == null ||
+                    valid_education["gpa"] > 4 ||
+                    valid_education["gpa"] < 0
+                ) {
+                    swal("ไม่สามารถบันทึกข้อมูลได้" , "โปรดเลือกสถานศึกษาที่จบ!" , "error");
+                } else {
+                    validate["education"] = true;
+                }
+            // Validate *contact
+                if (
+                    (valid_contact["line_id"] == "" || valid_contact["line_id"] == null) &&
+                    (valid_contact["mail"] == "" || valid_contact["mail"] == null) &&
+                    (valid_contact["telephone"] == "" || valid_contact["telephone"] == null)
+                ) {
+                    swal("ไม่สามารถบันทึกข้อมูลได้" , "โปรดระบุช่องทางการติดต่อ!" , "error");
+                } else {
+                    validate["contact"] = true;
+                }
+            // Validate flag
+                if (
+                    validate["personnel"] == true &&
+                    validate["regist_info"] == true &&
+                    validate["education"] == true &&
+                    validate["contact"] == true
+                ) {
+                    document.getElementById("ApplicationForm").submit();
+                }
             }
         </script>
     @endsection

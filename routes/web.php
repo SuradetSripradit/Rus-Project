@@ -1,22 +1,24 @@
 <?php
 
     use App\Http\Controllers\Auth\ChangePassword;
+use App\Http\Controllers\Frontend\ApplicationForm;
 use App\Http\Controllers\Frontend\ctl_show_anouncements;
+use App\Http\Controllers\Frontend\ctl_submit_application;
 use App\Http\Controllers\ManageAnouncements\ctl_manage_anouncements;
-use App\Http\Controllers\ManageCourse\ctl_manage_course;
+    use App\Http\Controllers\ManageCourse\ctl_manage_course;
     use App\Http\Controllers\ManageData\ctl_manage_college;
     use App\Http\Controllers\ManageData\ctl_manage_prefix;
     use App\Http\Controllers\ManageUser\ctl_manage_user;
-use App\Models\anouncements;
-use App\Models\class_level;
-use App\Models\course;
-use App\Models\personnel;
-use App\Models\prefix;
-use App\Models\school;
-use App\Models\User;
-use GuzzleHttp\RetryMiddleware;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+    use App\Models\anouncements;
+    use App\Models\class_level;
+    use App\Models\course;
+    use App\Models\personnel;
+    use App\Models\prefix;
+    use App\Models\school;
+    use App\Models\User;
+    use GuzzleHttp\RetryMiddleware;
+    use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Route;
     use Illuminate\Support\Facades\Auth;
     use Illuminate\Support\Facades\DB;
     use Illuminate\Support\Facades\Storage;
@@ -139,6 +141,19 @@ Route::get('course/{id}', function ($id) {
         'id' ,
         'school'
     ));
+})->name('course');
+
+Route::post('course/applicationform.submit', [ApplicationForm::class , 'SubmitForm'])->name('submit.form');
+
+Route::get('attach/{fileName}', function ($fileName) {
+    $tmp_file = public_path("SystemFile/anouncements_path/$fileName");
+
+    $tmp_arr = explode("." , $fileName);
+    $file_type_get = $tmp_arr[(count($tmp_arr) -1)];
+    $headers = [
+        "file_type" => $file_type_get
+    ];
+    return response()->download($tmp_file , $fileName , $headers);
 });
 
 Route::get('promote-image/{id}', function ($id) {

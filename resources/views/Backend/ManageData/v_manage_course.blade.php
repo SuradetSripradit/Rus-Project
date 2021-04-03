@@ -177,7 +177,7 @@
 
     @if ($CheckUpdate == true)
             @section('upd_FormAction')
-                    <form action="{{ route('course.upd') }}" method="POST">
+                    <form action="{{ route('course.upd') }}" method="POST" enctype="multipart/form-data">
                 @endsection
                 @section('upd_ModalForm')
                         <input type="hidden" name="course_code" value="{{ $returnData["COURSE_CODE"] }}">

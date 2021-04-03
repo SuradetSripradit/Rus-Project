@@ -9,7 +9,6 @@
                 <h3 class="text-center text-white">ข่าวประชาสัมพันธ์</h3>
             {{-- header --}}
             {{-- anouncementsHeader --}}
-                {{-- <div class="card"> --}}
                     @for ($i = 0; $i < count($anouncementsHeader); $i++)
                         <div class="card-deck mx-2 mb-2" >
                             @foreach ($anouncementsHeader[$i] as $anc)
@@ -51,11 +50,11 @@
                                                 @if ($anc->FILE_FLAG != null or $anc->FILE_FLAG != "" )
                                                     @if ($anc->FILE_FLAG == 'A')
                                                         <a href="{{ $anc->ANC_LINK }}" target="_blank" class="btn-sm btn-warning">เข้าสู่ลิงค์</a>
-                                                        <a href="#" class="btn-sm btn-success" target="_blank">ดาวน์โหลดเอกสารแนบ</a>
+                                                        <a href="{{ url('attach/' . $anc->FILE_NAME) }}" class="btn-sm btn-success" target="_blank">ดาวน์โหลดเอกสารแนบ</a>
                                                     @elseif($anc->FILE_FLAG == 'L')
                                                         <a href="{{ $anc->ANC_LINK }}" class="btn-sm btn-warning">เข้าสู่ลิงค์</a>
                                                     @elseif ($anc->FILE_FLAG == 'F')
-                                                        <a href="#" class="btn-sm btn-success">ดาวน์โหลดเอกสารแนบ</a>
+                                                        <a href="{{ url('attach/' . $anc->FILE_NAME) }}" class="btn-sm btn-success">ดาวน์โหลดเอกสารแนบ</a>
                                                     @endif
                                                 @else
 
