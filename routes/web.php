@@ -1,12 +1,12 @@
 <?php
 
     use App\Http\Controllers\Auth\ChangePassword;
-use App\Http\Controllers\ctl_approve_form;
-use App\Http\Controllers\ctl_show_report;
-use App\Http\Controllers\Frontend\ApplicationForm;
-use App\Http\Controllers\Frontend\ctl_show_anouncements;
-use App\Http\Controllers\Frontend\ctl_submit_application;
-use App\Http\Controllers\ManageAnouncements\ctl_manage_anouncements;
+    use App\Http\Controllers\ctl_approve_form;
+    use App\Http\Controllers\ctl_show_report;
+    use App\Http\Controllers\Frontend\ApplicationForm;
+    use App\Http\Controllers\Frontend\ctl_show_anouncements;
+    use App\Http\Controllers\Frontend\ctl_submit_application;
+    use App\Http\Controllers\ManageAnouncements\ctl_manage_anouncements;
     use App\Http\Controllers\ManageCourse\ctl_manage_course;
     use App\Http\Controllers\ManageData\ctl_manage_college;
     use App\Http\Controllers\ManageData\ctl_manage_prefix;

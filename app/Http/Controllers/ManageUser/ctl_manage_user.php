@@ -30,7 +30,7 @@ class ctl_manage_user extends Controller
                         ->orderBy('MAST.PERSONNEL_CODE')
                         ->get()->toArray();
         $CheckUpdate = false;
-        $prefix = prefix::all()->toArray();
+        $prefix = prefix::all()->where('ACTIVE_FLAG' , 'Y')->toArray();
         $position = position::all()->whereIn('POSITION_CODE' , ['00001' , '00002' , '00004'])->toArray();
 
         return view('Backend.ManageData.v_manage_user', compact(
@@ -63,7 +63,7 @@ class ctl_manage_user extends Controller
             }
         }
         $CheckUpdate = true;
-        $prefix = prefix::all()->toArray();
+        $prefix = prefix::all()->where('ACTIVE_FLAG' , 'Y')->toArray();
         $position = position::all()->whereIn('POSITION_CODE' , ['00001' , '00002' , '00004'])->toArray();
 
         return view('Backend.ManageData.v_manage_user', compact(
@@ -95,12 +95,21 @@ class ctl_manage_user extends Controller
                 $NewPersonnelID = $ID->PERSONNEL_CODE;
             }
 
+            $chk_img_size = $request->file('PersonnelImage')->getSize();
+            if (($chk_img_size / 1000000) > 5) {
+                return redirect()->route('Manage-User.index')->with('error' , 'ขนาดรูปสูงสุดที่รับได้คือ 5MB');
+            } else {
+                $img_name = $NewPersonnelID . "-" . $request->PersonnelImage->getClientOriginalName();
+                $imgPath = $request->file('PersonnelImage')->storeAs('img/personnel_path', $img_name, 'public');
+            }
+
             $personnel_res = new personnel([
                 "PERSONNEL_CODE" => $NewPersonnelID,
                 "POSITION_CODE" => $request->get('UserPosition'),
                 "PREFIX_ID" => $request->get('PrefixName'),
                 "NAME_TH" => $request->get('personnel_name_th'),
                 "NAME_EN" => $request->get('personnel_name_en'),
+                "FILE_NAME" => $img_name,
                 "UPDATE_USER_ID" => strval(Auth::user()->id)
             ]);
             $personnel_res->save();
@@ -160,19 +169,17 @@ class ctl_manage_user extends Controller
     public function destroy($id)
     {
         // clear child table
-        $map_info = DB::statement("DELETE FROM QUOTA_T_MAP_INFO WHERE PERSONNEL_CODE = $id");
-        $person_login = DB::statement("DELETE FROM QUOTA_T_PERSON_LOGIN WHERE id = $id");
+        $person_login = DB::statement("DELETE FROM QUOTA_T_PERSON_LOGIN WHERE id = '$id'");
 
-        if (!$map_info or !$person_login) {
+        if (!$person_login) {
             return redirect()->route('Manage-User.index')->with('error' , 'ไม่สามารถลบบัญชีผู้ใช้งานนี้ได้ โปรดลองใหม่อีกครั้ง !');
         } else {
-            $del_res = DB::statement("DELETE FROM QUOTA_T_PERSONNEL WHERE PERSONNEL_CODE = $id");
+            $del_res = DB::statement("DELETE FROM QUOTA_T_PERSONNEL WHERE PERSONNEL_CODE = '$id'");
             if ($del_res) {
                 return redirect()->route('Manage-User.index')->with('success' , 'ลบบัญชีผู้ใช้งานเรียบร้อยแล้ว!');
             } else {
                 return redirect()->route('Manage-User.index')->with('error' , 'ไม่สามารถลบบัญชีผู้ใช้งานนี้ได้ โปรดลองใหม่อีกครั้ง !');
             }
-
         }
 
     }

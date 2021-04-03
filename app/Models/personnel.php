@@ -17,6 +17,7 @@ class personnel extends Model
         "PREFIX_ID" ,
         "NAME_TH" ,
         "NAME_EN" ,
+        "FILE_NAME" ,
         "UPDATE_USER_ID"
     ];
 

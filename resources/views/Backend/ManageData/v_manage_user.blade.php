@@ -44,16 +44,16 @@
         @endphp
         <tr>
             <td>{{ $CNT_ROW }}</td>
-            <td>{{ $person->NAME_TH }}</td>
-            <td>{{ $person->NAME_EN }}</td>
-            <td>
+            <td class="text-left">{{ $person->NAME_TH }}</td>
+            <td class="text-left">{{ $person->NAME_EN }}</td>
+            <td class="text-center">
                 @foreach ($position as $positionDet)
                     @if ($person->POSITION_CODE == $positionDet["POSITION_CODE"])
                         {{ $positionDet["POSITION_DESC_TH"] }}
                     @endif
                 @endforeach
             </td>
-            <td>
+            <td class="text-center">
                 @if ($person->user_type == 0)
                     ผู้ดูแลระบบ
                 @elseif ($person->user_type == 1)
@@ -98,10 +98,19 @@
 @endsection
 
 @section('Add_FormAction')
-    <form action="{{ url('Manage-User') }}" method="POST">
+    <form action="{{ url('Manage-User') }}" method="POST" enctype="multipart/form-data">
     @endsection
 
     @section('Add_ModalForm')
+        <div class="form-group">
+            <label for="anc_link">
+                รูปภาพผู้ใช้งาน :
+            </label>
+            <div class="custom-file">
+                <input type="file" name="PersonnelImage" class="custom-file-input" id="PersonnelImageID">
+                <label class="custom-file-label" for="anc_file_id">เพิ่มรูปภาพผู้ใช้งาน</label>
+            </div>
+        </div>
         <div class="form-group">
             <label for="PrefixName">
                 คำนำหน้าชื่อ :
@@ -266,5 +275,12 @@
                         }
                     });
             }
+
+            $('#PersonnelImageID').on('change',function(){
+                var Add_att_name = $(this).val(); // get name
+                var add_file_tmp = Add_att_name.split("\\");
+                var length = add_file_tmp.length -1;
+                $(this).next('.custom-file-label').html(add_file_tmp[length]); // set name
+            })
         </script>
     @endsection
