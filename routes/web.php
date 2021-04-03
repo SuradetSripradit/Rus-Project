@@ -77,7 +77,7 @@ Route::get('/personnel', function () {
                 ON PS.PREFIX_ID = PF.PREFIX_CODE
 			LEFT JOIN QUOTA_T_POSITION POS
 				ON PS.POSITION_CODE = POS.POSITION_CODE
-        WHERE PF.ACTIVE_FLAG = 'Y'
+        WHERE PF.ACTIVE_FLAG = 'Y' AND PS.NAME_TH NOT LIKE '%ผู้ดูแลระบบ%'
         ORDER BY PS.POSITION_CODE DESC"
     );
 
@@ -143,6 +143,17 @@ Route::get('attach/{fileName}', function ($fileName) {
         "file_type" => $file_type_get
     ];
     return response()->download($tmp_file , $fileName , $headers);
+});
+
+Route::get('personnel/{imgName}', function ($imgName) {
+    $tmp_path = public_path("assets/img/personnel_path/$imgName");
+    $ImageName = $imgName;
+
+    $headers = [
+        "file_type" => 'png'
+    ];
+
+    return response()->download($tmp_path , $imgName , $headers);
 });
 
 Route::get('promote-image/{id}', function ($id) {

@@ -18,9 +18,17 @@
                         @foreach ($personnel[$i] as $psn)
                             <div class="card" onmouseover="" style="cursor: pointer;">
                                 <div class="card-body text-center">
-                                    <img src="{{ asset('/assets/img/PromoteCourse/00001-SEA.jpg') }}" style="width: 50%;height: 150px;">
+                                    @php
+                                        if ($psn->FILE_NAME == NULL or $psn->FILE_NAME == "") {
+                                            $genFileName = "00000-NoImage.jpg";
+                                        } else {
+                                            $genFileName = $psn->FILE_NAME;
+                                        }
+
+                                    @endphp
+                                    <img src="{{ url('personnel/' . $genFileName) }}" style="width: 50%;height: 150px;">
                                     <p class="card-text text-left">
-                                        <b>ชื่อ (ไทย) : </b>{{ $psn->PREFIX_NAME_TH }} {{ $psn->NAME_TH }}
+                                        <b>ชื่อ : </b>{{ $psn->PREFIX_NAME_TH }} {{ $psn->NAME_TH }}
                                         {{-- <br>
                                         <b>ชื่อ (อังกฤษ) :</b> {{ $psn->PREFIX_NAME_EN }} {{ $psn->NAME_EN }} --}}
                                     </p>
