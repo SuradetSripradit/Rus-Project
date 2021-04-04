@@ -233,7 +233,7 @@ Auth::routes();
 
         /* Anouncements Group */
 
-        // Route::resource('dashboard', [ctl_show_report::class , 'Dashboard']);
+        Route::resource('dashboard', ctl_show_report::class);
 
         Route::resource('approve', ctl_approve_form::class);
         Route::post('approve/submit', [ctl_approve_form::class , 'approve_form_application'])->name('approve.submit');

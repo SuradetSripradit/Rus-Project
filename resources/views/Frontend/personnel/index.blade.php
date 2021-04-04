@@ -26,12 +26,14 @@
                                         }
 
                                     @endphp
-                                    <img src="{{ url('personnel/' . $genFileName) }}" style="width: 50%;height: 150px;">
-                                    <p class="card-text text-left">
-                                        <b>ชื่อ : </b>{{ $psn->PREFIX_NAME_TH }} {{ $psn->NAME_TH }}
-                                        {{-- <br>
-                                        <b>ชื่อ (อังกฤษ) :</b> {{ $psn->PREFIX_NAME_EN }} {{ $psn->NAME_EN }} --}}
-                                    </p>
+                                    <img src="{{ url('personnel/' . $genFileName) }}" class="mb-3" style="width: 50%;height: 150px;">
+                                    <div class="container mx-auto mb-2">
+                                        <p class="card-text text-left">
+                                            <b>ชื่อ : </b>{{ $psn->PREFIX_NAME_TH }} {{ $psn->NAME_TH }}
+                                            {{-- <br>
+                                            <b>ชื่อ (อังกฤษ) :</b> {{ $psn->PREFIX_NAME_EN }} {{ $psn->NAME_EN }} --}}
+                                        </p>
+                                    </div>
                                 </div>
                                 <div class="card-footer text-center">
                                     <i class="text-black-50" style="font-size:14px">{{ $psn->POSITION_DESC_TH }}</i>
