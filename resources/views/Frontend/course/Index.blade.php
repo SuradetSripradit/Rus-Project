@@ -100,6 +100,7 @@
                             ระดับการศึกษาที่จบ :
                         </label>
                         <select name="class_level_register" id="class_level_register_id" class="form-control" style="width: 100%" required>
+                                <option value="" selected="" disabled>--- โปรดเลือกระดับการศึกษาที่จบ ---</option>
                             @foreach ($class_level as $cl)
                                 <option value="{{ $cl["CLASS_LEVEL_CODE"] }}">{{ $cl["CLASS_LEVEL_NAME_TH"] }}</option>
                             @endforeach
@@ -304,21 +305,25 @@
                 var chk_type = document.getElementById("DataVerify").value;
                 var selectData = document.getElementById("class_level_register_id").value;
 
-                if (chk_type == "T") {
-                    if (selectData != "02") {
-                        swal("ล้มเหลว!", "ระดับการศึกษาที่จบยังไม่สามารถสมัครสาขานี้ได้ โปรดเลือกใหม่อีกครั้ง", "warning");
-                    } else {
-                        $("#Register_Modal").modal({
-                            backdrop: "static"
-                        }, 'show');
-                    }
-                } else if(chk_type == "R") {
-                    if (selectData != "01") {
-                        swal("ล้มเหลว!", "ระดับการศึกษาที่จบยังไม่สามารถสมัครสาขานี้ได้ โปรดเลือกใหม่อีกครั้ง", "warning");
-                    } else {
-                        $("#Register_Modal").modal({
-                            backdrop: "static"
-                        }, 'show');
+                if (selectData == null || selectData == "") {
+                    swal("ล้มเหลว!", "โปรดเลือกระดับการศึกษาที่จบ", "error");
+                } else {
+                    if (chk_type == "T") {
+                        if (selectData != "02") {
+                            swal("ล้มเหลว!", "ระดับการศึกษาที่จบยังไม่สามารถสมัครสาขานี้ได้ โปรดเลือกใหม่อีกครั้ง", "warning");
+                        } else {
+                            $("#Register_Modal").modal({
+                                backdrop: "static"
+                            }, 'show');
+                        }
+                    } else if(chk_type == "R") {
+                        if (selectData != "01") {
+                            swal("ล้มเหลว!", "ระดับการศึกษาที่จบยังไม่สามารถสมัครสาขานี้ได้ โปรดเลือกใหม่อีกครั้ง", "warning");
+                        } else {
+                            $("#Register_Modal").modal({
+                                backdrop: "static"
+                            }, 'show');
+                        }
                     }
                 }
             }
