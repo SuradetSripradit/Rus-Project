@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\course;
 use GuzzleHttp\RetryMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,13 +12,10 @@ class ctl_approve_form extends Controller
     public function index()
     {
 
-        $profile = $this->GetProfile();
-        return view('Backend.approve' , compact('profile'));
-    }
 
-    public function show($id)
-    {
-        //
+        $profile = $this->GetProfile();
+        $head_course = course::select("COURSE_CODE" , "COURSE_HEAD_CODE")->where('ACTIVE_FLAG' , 'Y')->distinct()->get()->toArray();
+        return view('Backend.approve' , compact('profile' , 'head_course'));
     }
 
     public function approve_form_application(Request $request)
@@ -38,11 +36,6 @@ class ctl_approve_form extends Controller
                 return redirect()->route('approve.index')->with('success' , 'อนุมัติใบสมัครเรียบร้อยแล้ว !');
             }
         }
-    }
-
-    public function destroy($id)
-    {
-        //
     }
 
     private function GetProfile()
