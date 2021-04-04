@@ -190,7 +190,8 @@
                             <div class="col-sm-12">
                                 <label for="id_card">บัตรประจำตัวประชาชน : </label>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" name="id_card" id="id_card_id" placeholder="รหัสบัตรประชาชน 13 หลัก" required>
+                                    <input name="id_card" id="ID_CARD_NO" type="text" class="form-control" onkeyup="formatText(this,'ID-CARD')"
+                        onfocusout="ValidateID();" placeholder="รหัสบัตรประจำตัวประชาชน" required>
                                 </div>
                             </div>
                             <div class="col-sm-12">
@@ -301,6 +302,62 @@
                 }, 'show');
             });
 
+            function formatText(txt_data, check_value) {
+            if (check_value == "ID-CARD") {
+                var format = new String("_-____-_____-_-__");
+                var format_text = new String("-");
+            } else {
+                var format = new String("__-____-____");
+                var format_text = new String("-");
+            }
+            var returnFormat = new String("");
+            var data_length = txt_data.value.length;
+            var data_new_length = data_length - 1;
+            for (i = 0; i < format.length; i++) {
+                if (data_new_length == i && format.charAt(i + 1) == format_text) {
+                    returnFormat += txt_data.value + format_text;
+                    txt_data.value = returnFormat;
+                }
+            }
+            if (data_length >= format.length) {
+                txt_data.value = txt_data.value.substr(0, format.length);
+            }
+        }
+
+        function ValidateID() {
+            var tmp_ID = document.getElementById("ID_CARD_NO").value;
+            var arr_ID = tmp_ID.split("");
+            var tmp_cnt = 13;
+            var cal_id = 0;
+            var last_digit = 0;
+
+            if (tmp_ID.length > 0) {
+                for (let cnt_id = 0; cnt_id < arr_ID.length; cnt_id++) {
+                    if (arr_ID[cnt_id] == "-") {
+                        continue;
+                    } else {
+                        if (tmp_cnt == 1) {
+                            last_digit = arr_ID[cnt_id];
+                            break;
+                        } else{
+                            cal_id += (arr_ID[cnt_id] * tmp_cnt);
+                            tmp_cnt --;
+                        }
+                    }
+                }
+                cal_id = (cal_id % 11);
+                var prepare_id = 11 - (cal_id);
+                if (prepare_id != last_digit) {
+                    document.getElementById("ID_CARD_NO").value = "";
+                    swal({
+                        title: "หมายเลขบัตรประจำตัวประชาชนไม่ถูกต้อง !",
+                        text: "โปรดตรวจสอบหมายเลขบัตรประชาชนอีกครั้ง",
+                        icon: "warning",
+                    });
+                }
+            }
+        }
+
             function VerifyRegister() {
                 var chk_type = document.getElementById("DataVerify").value;
                 var selectData = document.getElementById("class_level_register_id").value;
@@ -376,6 +433,8 @@
                     swal("ไม่สามารถบันทึกข้อมูลได้" , "โปรดระบุนามสกุลผู้สมัคร!" , "error");
                 } else if (valid_regist_info["id_card"] == "" || valid_regist_info["id_card"] == null) {
                     swal("ไม่สามารถบันทึกข้อมูลได้" , "โปรดระบุเลขบัตรประจำตัวประชาชน!" , "error");
+                } else if (valid_regist_info["id_card"].length != 13) {
+                    swal("ไม่สามารถบันทึกข้อมูลได้" , "โปรดตรวจสอบเลขบัตรประจำตัวประชาชน!" , "error");
                 } else if (valid_regist_info["gender"] == "" || valid_regist_info["gender"] == null) {
                     swal("ไม่สามารถบันทึกข้อมูลได้" , "โปรดเลือกเพศ!" , "error");
                 } else {

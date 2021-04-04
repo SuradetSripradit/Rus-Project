@@ -27,13 +27,12 @@ class ApplicationForm extends Controller
                 foreach ($gen as $item) {
                     $new_id = $item->new_id;
                 }
-
             // Insert data
             $ins_res = new application([
                 "APPLICATION_CODE" => strval($new_id),
                 "APPLICATION_YEAR" => date('Y'),
                 "COURSE_CODE" => $course_code,
-                "ID_CARD_NUMBER" => $req->get('id_card'),
+                "ID_CARD_NUMBER" => str_replace("-" , "",$req->get('id_card')),
                 "PERSONNEL_CODE" => $req->get('selectPersonnel'),
                 "PREFIX_CODE" => $req->get('prefix'),
                 "FIRST_NAME_TH" => $req->get('f_name_t'),
