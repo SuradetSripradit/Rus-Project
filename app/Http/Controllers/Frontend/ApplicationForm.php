@@ -16,6 +16,7 @@ class ApplicationForm extends Controller
         if ($tk != csrf_token() or $tk == "" or $tk == null) {
             return redirect()->route('MainPage')->with('error' , 'Token ไม่ถูกต้อง');
         } else {
+            $id_card = str_replace("-" , "",$req->get('id_card'));
             // Declare Data
             $course_code = $req->get('course_code');
 
@@ -32,7 +33,7 @@ class ApplicationForm extends Controller
                 "APPLICATION_CODE" => strval($new_id),
                 "APPLICATION_YEAR" => date('Y'),
                 "COURSE_CODE" => $course_code,
-                "ID_CARD_NUMBER" => str_replace("-" , "",$req->get('id_card')),
+                "ID_CARD_NUMBER" => $id_card,
                 "PERSONNEL_CODE" => $req->get('selectPersonnel'),
                 "PREFIX_CODE" => $req->get('prefix'),
                 "FIRST_NAME_TH" => $req->get('f_name_t'),
