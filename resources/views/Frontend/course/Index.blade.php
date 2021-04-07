@@ -433,8 +433,6 @@
                     swal("ไม่สามารถบันทึกข้อมูลได้" , "โปรดระบุนามสกุลผู้สมัคร!" , "error");
                 } else if (valid_regist_info["id_card"] == "" || valid_regist_info["id_card"] == null) {
                     swal("ไม่สามารถบันทึกข้อมูลได้" , "โปรดระบุเลขบัตรประจำตัวประชาชน!" , "error");
-                } else if (valid_regist_info["id_card"].length != 13) {
-                    swal("ไม่สามารถบันทึกข้อมูลได้" , "โปรดตรวจสอบเลขบัตรประจำตัวประชาชน!" , "error");
                 } else if (valid_regist_info["gender"] == "" || valid_regist_info["gender"] == null) {
                     swal("ไม่สามารถบันทึกข้อมูลได้" , "โปรดเลือกเพศ!" , "error");
                 } else {
